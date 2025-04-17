@@ -31,8 +31,16 @@ try:
     )
     vms.raise_for_status()
     
-    # Pretty print the results
-    pprint(vms.json())
+    # Get VM data and format it nicely
+    vm_list = vms.json().get("value", [])
+    print(f"\nTotal VMs found: {len(vm_list)}")
+    
+    for vm in vm_list:
+        print("\nVM Details:")
+        print(f"Name: {vm.get('name')}")
+        print(f"Power State: {vm.get('power_state')}")
+        print(f"CPU Count: {vm.get('cpu_count')}")
+        print(f"Memory Size (MB): {vm.get('memory_size_MiB')}")
 
 except requests.exceptions.RequestException as e:
     print(f"API request failed: {e}")

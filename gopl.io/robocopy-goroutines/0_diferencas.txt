@@ -1,0 +1,28 @@
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy para Windows                              
+-------------------------------------------------------------------------------
+
+  Iniciado: quinta-feira, 27 de fevereiro de 2025 16:34:49
+   Origem : D:\ooo\origem1\
+     Destino : D:\sss\destino1\
+
+    Arquivos: *.*
+	    
+  Op‡äes: *.* /V /BYTES /L /TEE /S /DCOPY:DA /COPY:DAT /XL /XO /R:1000000 /W:30 
+
+------------------------------------------------------------------------------
+
+	                   2	D:\ooo\origem1\
+	         mesmo		 3020502	coding-interview-university-main.zip
+	         mesmo		 6384553	contrato_escola_lucas.pdf
+
+------------------------------------------------------------------------------
+
+               Total   Copiada  IgnoradaIncompatibilidade     FALHA    Extras
+Diret¢rios:         1         0         1         0         0         0
+ Arquivos:         2         0         2         0         0         0
+    Bytes:   9405055         0   9405055         0         0         0
+N.§ de Vezes:   0:00:00   0:00:00                       0:00:00   0:00:00
+   Finalizado em: quinta-feira, 27 de fevereiro de 2025 16:34:49
+

@@ -1,0 +1,121 @@
+package main
+
+import (
+	"encoding/csv"
+	"fmt"
+	"log"
+	"os"
+	"os/exec"
+	"strings"
+	"sync"
+)
+
+type CopyTask struct {
+	Source string
+	Dest   string
+}
+
+const (
+	RobocopySuccess         = 0
+	RobocopySomeFailures    = 1
+	RobocopyExtraFiles      = 2
+	RobocopyMismatchedFiles = 4
+	RobocopyFatalError      = 8
+	RobocopyUnknownError    = 16
+	robocopyCommand         = "robocopy"
+	robocopyOptions         = "/L /S /V /XO /XL /BYTES /TEE"
+)
+
+var (
+	printMutex sync.Mutex
+)
+
+func readCSVTasks(filename string) ([]CopyTask, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, fmt.Errorf("erro ao abrir o arquivo csv: %w", err)
+	}
+	defer file.Close()
+
+	reader := csv.NewReader(file)
+	records, err := reader.ReadAll()
+	if err != nil {
+		return nil, fmt.Errorf("erro ao ler o arquivo csv: %w", err)
+	}
+
+	var tasks []CopyTask
+	for i, record := range records {
+		if len(record) != 2 {
+			return nil, fmt.Errorf("formato inválido na linha %d do CSV: %v", i+1, record)
+		}
+		tasks = append(tasks, CopyTask{
+			Source: record[0],
+			Dest:   record[1],
+		})
+	}
+
+	return tasks, nil
+}
+
+func main() {
+	logFile, err := os.OpenFile("robocopy.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("Erro ao abrir o arquivo de log: %v", err)
+	}
+	defer logFile.Close()
+
+	logger := log.New(logFile, "LOG: ", log.Ldate|log.Ltime|log.Lshortfile)
+
+	// Lista de tarefas de cópia
+	tasks, err := readCSVTasks("copias.csv")
+	if err != nil {
+		log.Printf("Erro ao ler arquivo CSV: %v\n", err)
+		return
+	}
+
+	var wg sync.WaitGroup
+
+	for nCopias, task := range tasks {
+		wg.Add(1)
+		go func(src, dest string, nCopias int) {
+			defer wg.Done()
+
+			logger.Printf("Iniciando cópia %s → %s", src, dest)
+			args := []string{src, dest}
+			args = append(args, strings.Split(robocopyOptions, " ")...)
+			args = append(args, "/LOG:"+fmt.Sprintf("%d_diferencas.txt", nCopias))
+			cmd := exec.Command(robocopyCommand, args...)
+
+			output, err := cmd.CombinedOutput()
+
+			printMutex.Lock()
+			defer printMutex.Unlock()
+
+			fmt.Printf("\n=== Resultado da cópia %s → %s ===\n", src, dest)
+			fmt.Println(string(output))
+
+			// Executa o comando e trata os erros
+			if err != nil {
+				if exitErr, ok := err.(*exec.ExitError); ok {
+					if exitErr.ExitCode() >= RobocopyFatalError {
+						fmt.Printf("ERRO CRÍTICO: %v\n", err)
+						logger.Printf("ERRO CRÍTICO: Cópia de %s para %s: %v", src, dest, err)
+					} else {
+						fmt.Printf("Aviso: %v (código de saída %d)\n", err, exitErr.ExitCode())
+						logger.Printf("Aviso: Cópia de %s para %s: %v (código de saída %d)", src, dest, err, exitErr.ExitCode())
+					}
+				} else {
+					fmt.Printf("Erro na execução: %v\n", err)
+					logger.Printf("Erro na execução da copia de %s para %s: %v", src, dest, err)
+				}
+			} else {
+				fmt.Println("Operação concluída com sucesso")
+				logger.Printf("Operação concluída com sucesso na cópia de %s para %s", src, dest)
+			}
+			fmt.Println("======================================")
+			logger.Printf("Cópia de %s para %s finalizada", src, dest)
+		}(task.Source, task.Dest, nCopias)
+	}
+
+	wg.Wait()
+}

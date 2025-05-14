@@ -1,0 +1,28 @@
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy para Windows                              
+-------------------------------------------------------------------------------
+
+  Iniciado: quinta-feira, 27 de fevereiro de 2025 16:34:49
+   Origem : D:\ooo\origem3\
+     Destino : D:\sss\destino3\
+
+    Arquivos: *.*
+	    
+  Op‡äes: *.* /V /BYTES /L /TEE /S /DCOPY:DA /COPY:DAT /XL /XO /R:1000000 /W:30 
+
+------------------------------------------------------------------------------
+
+	                   2	D:\ooo\origem3\
+	       sozinho		 2296436	overview GCP Eletrobras 1.png
+	       sozinho		 2314981	Tutorial-Execucao-MODPLP_v2.0.0.pptx
+
+------------------------------------------------------------------------------
+
+               Total   Copiada  IgnoradaIncompatibilidade     FALHA    Extras
+Diret¢rios:         1         0         1         0         0         0
+ Arquivos:         2         0         2         0         0         0
+    Bytes:   4611417         0   4611417         0         0         0
+N.§ de Vezes:   0:00:00   0:00:00                       0:00:00   0:00:00
+   Finalizado em: quinta-feira, 27 de fevereiro de 2025 16:34:49
+

@@ -8,7 +8,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # Base URL should not include /rest/vcenter
 vcenter_url = "https://elb1180.int.eletrobras.gov.br"
 username = "jacesar1@int.eletrobras.gov.br"
-password = "##7Ujm,kio"
+password = "##8Ik,.lop"
 
 try:
     # Authenticate and get session

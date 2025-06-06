@@ -56,7 +56,7 @@ func main() {
 	var x, y []int
 	for i := 0; i < 10; i++ {
 		y = appendInt(x, i)
-		fmt.Printf("%d  cap=%d\t%v\n", i, cap(y), y)
+		fmt.Printf("%d  len=%d\tcap=%d\t%v\n", i, len(y), cap(y), y)
 		x = y
 	}
 }

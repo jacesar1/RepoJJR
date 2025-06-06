@@ -1,0 +1,19 @@
+nodes:
+  1: "vm-gce-000001"
+  2: "vm-gce-000002"
+  3: "vm-gce-000003"
+  4: "vm-gce-000004"
+  5: "vm-gce-000005"
+  6: "vm-gce-000006"
+  7: "vm-gce-000007"
+  8: "vm-gce-000008"
+  9: "vm-gce-000009"
+  10: "vm-gce-000010"
+  11: "vm-gce-000011"
+settings:  
+  installPath: "/opt/PLDPro_Install/"
+  serverPort: "4455"
+  authUserEnv: "admin"
+  authPassEnv: "wwww"
+  realm: "Restrito"
+  

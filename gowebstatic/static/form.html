@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLDPro - Instalador concorrente em Go</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Define root color variables for the dark theme */
+        :root {
+            --primary-color: #1E90FF; /* Primary blue color */
+            --secondary-color: #E0E0E0; /* Light grey for text */
+            --background-color: #121212; /* Dark background */
+            --text-color: #E0E0E0; /* Light text color for readability */
+            --button-hover-color: #4682B4; /* Hover effect for buttons */
+            --input-border-color: #333; /* Input field border color */
+            --input-focus-color: #1E90FF; /* Focus effect color */
+        }
+
+        /* Reset default margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling with dark background and light text */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 1rem;
+        }
+
+        /* Container styling for the content */
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Header styling with dark theme */
+        .header {
+            background-color: #181818;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+
+        /* Navigation bar styling */
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Logo image size */
+        .logo {
+            height: 40px;
+            margin-right: 2rem;
+        }
+
+        /* Main title with light color and modern font weight */
+        h1 {
+            color: var(--secondary-color);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        /* Form card styling with shadow and rounded corners */
+        .form-card {
+            background: #2C2C2C;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Form group spacing */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Label styling with modern font weight */
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        /* Input field styling */
+        input[type="text"] {
+		 button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        .node-selection { margin-bottom: 20px; }
+        #individual-nodes { margin-left: 20px; }
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--input-border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            background-color: #333;
+            color: var(--text-color);
+            transition: border-color 0.3s ease;
+        }
+
+        /* Input field focus styling */
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--input-focus-color);
+            box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.2);
+        }
+
+        /* Submit button styling with modern hover effect */
+        input[type="submit"] {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Hover effect on submit button */
+        input[type="submit"]:hover {
+            background-color: var(--button-hover-color);
+        }
+
+        /* Footer styling */
+        .footer {
+            text-align: center;
+            color: #718096;
+            padding: 2rem 0;
+            font-size: 0.875rem;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 640px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .form-card {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <img src="https://go.dev/images/go-logo-blue.svg" alt="Logo" class="logo">
+            <h1>.......Console instalador PLDPro</h1>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="form-card">
+            <form action="/execute" method="post">
+			        <div class="node-selection">
+            <h3>Select Nodes:</h3>
+			 <br>
+            <label>
+                <input type="checkbox" name="nodes" value="0" onclick="toggleAll(this)"> All Nodes
+            </label>
+           
+<div id="individual-nodes" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+  <label style="display: flex; align-items: center;"><input type="checkbox" name="nodes" value="vm-gce-000001"><h4> vm-gce-000001</h4></label>
+  <label style="display: flex; align-items: center;"><input type="checkbox" name="nodes" value="vm-gce-000002"><h4> vm-gce-000002</h4></label>
+  <label style="display: flex; align-items: center;"><input type="checkbox" name="nodes" value="vm-gce-000003"><h4> vm-gce-000003</h4></label>
+  <label style="display: flex; align-items: center;"><input type="checkbox" name="nodes" value="vm-gce-000004"><h4> vm-gce-000004</h4></label>
+  <label style="display: flex; align-items: center;"><input type="checkbox" name="nodes" value="vm-gce-000005"><h4> vm-gce-000005</h4></label>
+  <label style="display: flex; align-items: center;"><input type="checkbox" name="nodes" value="vm-gce-000006"><h4> vm-gce-000006</h4></label>
+  <label style="display: flex; align-items: center;"><input type="checkbox" name="nodes" value="vm-gce-000007"><h4> vm-gce-000007</h4></label>
+  <label style="display: flex; align-items: center;"><input type="checkbox" name="nodes" value="vm-gce-000008"><h4> vm-gce-000008</h4></label>
+  <label style="display: flex; align-items: center;"><input type="checkbox" name="nodes" value="vm-gce-000009"><h4> vm-gce-000009</h4></label>
+  <label style="display: flex; align-items: center;"><input type="checkbox" name="nodes" value="vm-gce-000010"><h4> vm-gce-000010</h4></label>
+  <label style="display: flex; align-items: center;"><input type="checkbox" name="nodes" value="vm-gce-000011"><h4> vm-gce-000011</h4></label>
+</div>
+ <br>
+                <div class="form-group">
+                    <label for="versoesRemovidas"><h3>Versões para remoção</h3></label>
+                    <input type="text" id="versoesRemovidas" name="versoesRemovidas" 
+                           placeholder="Ex: 3.10.0 3.11.0 (ou 0 para nenhuma remoção)">
+                </div>
+
+                <div class="form-group">
+                    <label for="setups"><h3>Instalador</h3></label>
+                    <input type="text" id="setups" name="setups" 
+                           placeholder="Ex: SetupECOMERC3.12.0 SetupECOMERC3.13.0 (ou 0 para nenhuma instalação)">
+                </div>
+
+                <div class="form-group">
+                    <label for="portas"><h3>Porta</h3></label>
+                    <input type="text" id="portas" name="portas" 
+                           placeholder="Ex: 8084 8085">
+                </div>
+
+
+                <input type="submit" value="Disparar Goroutines">
+            </form>
+        </div>
+    </div>
+	<script>
+    function toggleAll(source) {
+        var checkboxes = document.querySelectorAll('#individual-nodes input[type="checkbox"]');
+        for(var i=0; i<checkboxes.length; i++) {
+            checkboxes[i].checked = source.checked;
+        }
+    }
+    </script>
+
+    <footer class="footer">
+        <p>&copy; 2025 Console instalador PLDPro v1.0. Desenvolvido em Golang por Jaime Cesar Jr.</p>
+    </footer>
+</body>
+</html>
